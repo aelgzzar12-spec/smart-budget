@@ -13,6 +13,38 @@
 
 <style>
 
+:root{
+  --bg:#f5f3ee;
+  --surface:#ffffff;
+  --surface-soft:#f8f7f3;
+  --text:#20221f;
+  --muted:#777b75;
+  --line:#e8e5de;
+  --green:#537965;
+  --green-dark:#405f50;
+  --red:#a55f5b;
+  --gold:#a2855d;
+  --icon-bg:#f2f0ea;
+  --chart:#d7d2c7;
+  --shadow:0 12px 35px rgba(32,34,31,.06);
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark{
+  --bg:#151715;
+  --surface:#20231f;
+  --surface-soft:#292c28;
+  --text:#f3f2ed;
+  --muted:#a5a8a2;
+  --line:#343832;
+  --icon-bg:#2b2e2a;
+  --chart:#4a4d47;
+  --shadow:0 12px 35px rgba(0,0,0,.20);
+}
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -28,9 +60,12 @@ body{
     Arial,
     sans-serif;
 
-  background:#f5f3ee;
-  color:#20221f;
+  background:var(--bg);
+  color:var(--text);
   min-height:100vh;
+  transition:
+    background .25s ease,
+    color .25s ease;
 }
 
 button{
@@ -61,7 +96,7 @@ button{
 }
 
 .brand p{
-  color:#777;
+  color:var(--muted);
   margin-top:5px;
   font-size:14px;
 }
@@ -73,23 +108,29 @@ button{
 }
 
 .month-selector{
-  background:white;
-  border:1px solid #e8e5de;
+  background:var(--surface);
+  border:1px solid var(--line);
   padding:11px 16px;
   border-radius:12px;
   font-size:14px;
-  color:#333;
+  color:var(--text);
 }
 
 .icon-btn{
   width:42px;
   height:42px;
   border:none;
-  background:white;
+  background:var(--surface);
+  color:var(--text);
   border-radius:12px;
   cursor:pointer;
   font-size:18px;
-  border:1px solid #e8e5de;
+  border:1px solid var(--line);
+  transition:.2s;
+}
+
+.icon-btn:hover{
+  transform:translateY(-1px);
 }
 
 .add-btn{
@@ -116,14 +157,15 @@ button{
 }
 
 .card{
-  background:white;
-  border:1px solid #e8e5de;
+  background:var(--surface);
+  border:1px solid var(--line);
   border-radius:20px;
   padding:22px;
+  box-shadow:var(--shadow);
 }
 
 .card-label{
-  color:#777;
+  color:var(--muted);
   font-size:13px;
   margin-bottom:12px;
 }
@@ -135,19 +177,19 @@ button{
 }
 
 .income{
-  color:#537965;
+  color:var(--green);
 }
 
 .expense{
-  color:#a55f5b;
+  color:var(--red);
 }
 
 .balance{
-  color:#20221f;
+  color:var(--text);
 }
 
 .savings{
-  color:#a2855d;
+  color:var(--gold);
 }
 
 .card-bottom{
@@ -159,7 +201,7 @@ button{
 
 .card-change{
   font-size:12px;
-  color:#777;
+  color:var(--muted);
 }
 
 /* =========================
@@ -176,10 +218,11 @@ button{
 }
 
 .section{
-  background:white;
-  border:1px solid #e8e5de;
+  background:var(--surface);
+  border:1px solid var(--line);
   border-radius:22px;
   padding:24px;
+  box-shadow:var(--shadow);
 }
 
 .section-header{
@@ -196,7 +239,7 @@ button{
 
 .section-link{
   font-size:13px;
-  color:#537965;
+  color:var(--green);
   cursor:pointer;
 }
 
@@ -234,18 +277,18 @@ button{
   width:65%;
   max-width:48px;
   border-radius:8px 8px 3px 3px;
-  background:#d7d2c7;
+  background:var(--chart);
   min-height:5px;
   transition:.3s;
 }
 
 .bar.active{
-  background:#537965;
+  background:var(--green);
 }
 
 .chart-label{
   font-size:11px;
-  color:#888;
+  color:var(--muted);
 }
 
 /* =========================
@@ -326,7 +369,7 @@ button{
   width:38px;
   height:38px;
   border-radius:11px;
-  background:#f2f0ea;
+  background:var(--icon-bg);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -344,7 +387,7 @@ button{
 
 .category-progress{
   height:6px;
-  background:#eeeae2;
+  background:var(--line);
   border-radius:10px;
   margin-top:7px;
   overflow:hidden;
@@ -353,7 +396,7 @@ button{
 .category-progress span{
   display:block;
   height:100%;
-  background:#537965;
+  background:var(--green);
   border-radius:10px;
 }
 
@@ -376,7 +419,7 @@ button{
   align-items:center;
   gap:14px;
   padding:15px 0;
-  border-bottom:1px solid #eeeae3;
+  border-bottom:1px solid var(--line);
 }
 
 .transaction:last-child{
@@ -387,7 +430,7 @@ button{
   width:42px;
   height:42px;
   border-radius:13px;
-  background:#f2f0ea;
+  background:var(--icon-bg);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -405,7 +448,7 @@ button{
 
 .transaction-date{
   font-size:11px;
-  color:#999;
+  color:var(--muted);
   margin-top:4px;
 }
 
@@ -415,16 +458,16 @@ button{
 }
 
 .transaction-amount.income{
-  color:#537965;
+  color:var(--green);
 }
 
 .transaction-amount.expense{
-  color:#a55f5b;
+  color:var(--red);
 }
 
 .empty-state{
   text-align:center;
-  color:#999;
+  color:var(--muted);
   padding:30px 10px;
   font-size:14px;
 }
@@ -580,7 +623,7 @@ button{
     justify-content:center;
     font-size:25px;
     margin-top:-24px;
-    border:4px solid #f5f3ee;
+    border:4px solid var(--bg);
   }
 
 }
@@ -598,7 +641,9 @@ button{
 
     <div class="brand">
 
-      <h1>Good morning 👋</h1>
+      <h1 id="greeting">
+        Good morning 👋
+      </h1>
 
       <p>
         Here's your financial overview for this month.
@@ -608,7 +653,7 @@ button{
 
     <div class="header-actions">
 
-      <div class="month-selector">
+      <div class="month-selector" id="monthSelector">
         October 2026
       </div>
 
@@ -760,8 +805,7 @@ button{
       <div
         class="chart"
         id="spendingChart"
-      >
-      </div>
+      ></div>
 
     </div>
 
@@ -823,8 +867,7 @@ button{
           <div
             class="progress-bar"
             id="goalProgress"
-          >
-          </div>
+          ></div>
 
         </div>
 
@@ -861,8 +904,7 @@ button{
       <div
         class="category-list"
         id="categoryList"
-      >
-      </div>
+      ></div>
 
     </div>
 
@@ -889,8 +931,7 @@ button{
       <div
         class="transaction-list"
         id="transactionList"
-      >
-      </div>
+      ></div>
 
     </div>
 
@@ -907,15 +948,8 @@ button{
     class="nav-item active"
     onclick="goHome()"
   >
-
-    <div class="nav-icon">
-      ⌂
-    </div>
-
-    <div>
-      Home
-    </div>
-
+    <div class="nav-icon">⌂</div>
+    <div>Home</div>
   </div>
 
 
@@ -923,15 +957,8 @@ button{
     class="nav-item"
     onclick="goToTransactions()"
   >
-
-    <div class="nav-icon">
-      ≡
-    </div>
-
-    <div>
-      Activity
-    </div>
-
+    <div class="nav-icon">≡</div>
+    <div>Activity</div>
   </div>
 
 
@@ -947,15 +974,8 @@ button{
     class="nav-item"
     onclick="goToGoals()"
   >
-
-    <div class="nav-icon">
-      ◇
-    </div>
-
-    <div>
-      Goals
-    </div>
-
+    <div class="nav-icon">◇</div>
+    <div>Goals</div>
   </div>
 
 
@@ -963,15 +983,8 @@ button{
     class="nav-item"
     onclick="goToSettings()"
   >
-
-    <div class="nav-icon">
-      ☰
-    </div>
-
-    <div>
-      More
-    </div>
-
+    <div class="nav-icon">☰</div>
+    <div>More</div>
   </div>
 
 </nav>
@@ -980,19 +993,272 @@ button{
 <script>
 
 /* =========================
-   MONEY FORMAT
+   SETTINGS
 ========================= */
+
+const defaultSettings = {
+  name:"",
+  currency:"USD",
+  notifications:true,
+  theme:"light"
+};
+
+
+function getSettings(){
+
+  try{
+
+    const saved =
+      localStorage.getItem(
+        "smartBudgetSettings"
+      );
+
+    if(saved){
+
+      return {
+        ...defaultSettings,
+        ...JSON.parse(saved)
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Could not read settings:",
+      error
+    );
+
+  }
+
+  return {
+    ...defaultSettings
+  };
+
+}
+
+
+/* =========================
+   CURRENCY
+========================= */
+
+const currencySymbols = {
+
+  USD:"$",
+  EUR:"€",
+  GBP:"£",
+  EGP:"E£",
+
+  SAR:"﷼",
+  AED:"د.إ",
+  QAR:"﷼",
+  KWD:"د.ك",
+  BHD:".د.ب",
+  OMR:"﷼",
+  JOD:"د.ا",
+
+  CAD:"C$",
+  AUD:"A$",
+  NZD:"NZ$",
+  CHF:"CHF",
+
+  JPY:"¥",
+  CNY:"¥",
+  HKD:"HK$",
+  SGD:"S$",
+  KRW:"₩",
+
+  INR:"₹",
+  PKR:"₨",
+  BDT:"৳",
+
+  TRY:"₺",
+  RUB:"₽",
+  UAH:"₴",
+
+  BRL:"R$",
+  MXN:"Mex$",
+  ARS:"$",
+  CLP:"$",
+
+  ZAR:"R",
+  NGN:"₦",
+  KES:"KSh",
+  GHS:"₵",
+
+  MAD:"د.م.",
+  DZD:"دج",
+  TND:"د.ت",
+  LYD:"ل.د",
+  IQD:"ع.د",
+
+  SEK:"kr",
+  NOK:"kr",
+  DKK:"kr",
+  PLN:"zł",
+  CZK:"Kč"
+
+};
+
+
+function getCurrency(){
+
+  const settings =
+    getSettings();
+
+  return settings.currency ||
+    "USD";
+
+}
+
+
+function getCurrencySymbol(){
+
+  return (
+    currencySymbols[
+      getCurrency()
+    ] || "$"
+  );
+
+}
+
 
 function formatMoney(amount){
 
-  return "$" +
-    Number(amount || 0).toLocaleString(
+  const currency =
+    getCurrency();
+
+
+  const symbol =
+    getCurrencySymbol();
+
+
+  return symbol +
+    Number(
+      amount || 0
+    ).toLocaleString(
       "en-US",
       {
         minimumFractionDigits:2,
         maximumFractionDigits:2
       }
     );
+
+}
+
+
+/* =========================
+   THEME
+========================= */
+
+function applyTheme(){
+
+  const settings =
+    getSettings();
+
+
+  if(
+    settings.theme === "dark"
+  ){
+
+    document.body.classList.add(
+      "dark"
+    );
+
+  }else{
+
+    document.body.classList.remove(
+      "dark"
+    );
+
+  }
+
+}
+
+
+/* =========================
+   GREETING
+========================= */
+
+function renderGreeting(){
+
+  const settings =
+    getSettings();
+
+
+  const name =
+    settings.name &&
+    settings.name.trim();
+
+
+  const hour =
+    new Date().getHours();
+
+
+  let greeting =
+    "Good morning";
+
+
+  if(hour >= 12 && hour < 18){
+
+    greeting =
+      "Good afternoon";
+
+  }else if(hour >= 18){
+
+    greeting =
+      "Good evening";
+
+  }
+
+
+  if(name){
+
+    document.getElementById(
+      "greeting"
+    ).textContent =
+      greeting +
+      ", " +
+      name +
+      " 👋";
+
+  }else{
+
+    document.getElementById(
+      "greeting"
+    ).textContent =
+      greeting +
+      " 👋";
+
+  }
+
+}
+
+
+/* =========================
+   CURRENT MONTH
+========================= */
+
+function renderMonth(){
+
+  const date =
+    new Date();
+
+
+  const text =
+    date.toLocaleDateString(
+      "en-US",
+      {
+        month:"long",
+        year:"numeric"
+      }
+    );
+
+
+  document.getElementById(
+    "monthSelector"
+  ).textContent =
+    text;
 
 }
 
@@ -1021,12 +1287,13 @@ function getTransactions(){
 
 
 /* =========================
-   GET TOTAL SAVINGS
+   TOTAL SAVINGS
 ========================= */
 
 function getTotalSavings(){
 
   let goals = [];
+
 
   try{
 
@@ -1054,10 +1321,12 @@ function getTotalSavings(){
 
 
   return goals.reduce(
-    (total, goal) => {
+    (total,goal) => {
 
       return total +
-        (Number(goal.saved) || 0);
+        (Number(
+          goal.saved
+        ) || 0);
 
     },
     0
@@ -1091,7 +1360,8 @@ function renderDashboard(){
 
 
       if(
-        transaction.type === "income"
+        transaction.type ===
+        "income"
       ){
 
         income += amount;
@@ -1105,22 +1375,6 @@ function renderDashboard(){
     }
   );
 
-
-  /*
-    Savings are now treated
-    as money moved away from
-    the available balance.
-
-    Example:
-
-    Income    = 5000
-    Expenses  = 250
-    Savings   = 500
-
-    Remaining =
-    5000 - 250 - 500
-    = 4250
-  */
 
   const savings =
     getTotalSavings();
@@ -1182,26 +1436,6 @@ function renderDashboard(){
 
 
 /* =========================
-   SAVINGS
-========================= */
-
-function renderSavings(){
-
-  const totalSaved =
-    getTotalSavings();
-
-
-  document.getElementById(
-    "totalSavings"
-  ).textContent =
-    formatMoney(
-      totalSaved
-    );
-
-}
-
-
-/* =========================
    GOAL
 ========================= */
 
@@ -1258,13 +1492,15 @@ function renderGoal(){
     document.getElementById(
       "goalSaved"
     ).textContent =
-      "$0 saved";
+      formatMoney(0) +
+      " saved";
 
 
     document.getElementById(
       "goalRemaining"
     ).textContent =
-      "$0 remaining";
+      formatMoney(0) +
+      " remaining";
 
 
     return;
@@ -1461,15 +1697,12 @@ function renderTransactions(
             <div class="transaction-info">
 
               <div class="transaction-name">
-                ${escapeHTML(
-                  name
-                )}
+                ${escapeHTML(name)}
               </div>
 
               <div class="transaction-date">
                 ${escapeHTML(
-                  transaction.date ||
-                  ""
+                  transaction.date || ""
                 )}
               </div>
 
@@ -1482,9 +1715,7 @@ function renderTransactions(
                   : "expense"
               }"
             >
-              ${sign}${formatMoney(
-                amount
-              )}
+              ${sign}${formatMoney(amount)}
             </div>
 
           </div>
@@ -1586,21 +1817,13 @@ function renderCategories(
   const icons = {
 
     Food:"🍔",
-
     Shopping:"🛍️",
-
     Transport:"🚗",
-
     Bills:"🧾",
-
     Entertainment:"🎬",
-
     Health:"❤️",
-
     Education:"📚",
-
     Home:"🏠",
-
     Other:"📦"
 
   };
@@ -1635,9 +1858,7 @@ function renderCategories(
             <div class="category-info">
 
               <div class="category-name">
-                ${escapeHTML(
-                  category
-                )}
+                ${escapeHTML(category)}
               </div>
 
               <div class="category-progress">
@@ -1653,9 +1874,7 @@ function renderCategories(
             </div>
 
             <div class="category-amount">
-              ${formatMoney(
-                amount
-              )}
+              ${formatMoney(amount)}
             </div>
 
           </div>
@@ -1701,9 +1920,7 @@ function renderChart(
 
 
   const values =
-    new Array(
-      12
-    ).fill(0);
+    new Array(12).fill(0);
 
 
   transactions.forEach(
@@ -1754,6 +1971,10 @@ function renderChart(
     );
 
 
+  const currentMonth =
+    new Date().getMonth();
+
+
   container.innerHTML =
     months.map(
       (month,index) => {
@@ -1771,7 +1992,7 @@ function renderChart(
 
 
         const active =
-          index === 9
+          index === currentMonth
             ? "active"
             : "";
 
@@ -1812,33 +2033,16 @@ function renderChart(
    SECURITY
 ========================= */
 
-function escapeHTML(
-  value
-){
+function escapeHTML(value){
 
   return String(
     value || ""
   )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 
 }
 
@@ -1898,6 +2102,12 @@ function showNotification(){
 
 function init(){
 
+  applyTheme();
+
+  renderGreeting();
+
+  renderMonth();
+
   renderDashboard();
 
   renderGoal();
@@ -1908,6 +2118,12 @@ function init(){
 window.addEventListener(
   "pageshow",
   function(){
+
+    applyTheme();
+
+    renderGreeting();
+
+    renderMonth();
 
     renderDashboard();
 
