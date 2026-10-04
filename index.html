@@ -366,10 +366,6 @@ button{
    TRANSACTIONS
 ========================= */
 
-.transactions{
-  margin-top:22px;
-}
-
 .transaction-list{
   display:flex;
   flex-direction:column;
@@ -1025,81 +1021,10 @@ function getTransactions(){
 
 
 /* =========================
-   DASHBOARD SUMMARY
+   GET TOTAL SAVINGS
 ========================= */
 
-function renderDashboard(){
-
-  const transactions =
-    getTransactions();
-
-  let income = 0;
-  let expenses = 0;
-
-  transactions.forEach(transaction => {
-
-    const amount =
-      Number(transaction.amount) || 0;
-
-    if(
-      transaction.type === "income"
-    ){
-
-      income += amount;
-
-    }else{
-
-      expenses += amount;
-
-    }
-
-  });
-
-
-  const balance =
-    income - expenses;
-
-
-  document.getElementById(
-    "totalIncome"
-  ).textContent =
-    formatMoney(income);
-
-
-  document.getElementById(
-    "totalExpenses"
-  ).textContent =
-    formatMoney(expenses);
-
-
-  document.getElementById(
-    "remainingBalance"
-  ).textContent =
-    formatMoney(balance);
-
-
-  renderSavings();
-
-  renderTransactions(
-    transactions
-  );
-
-  renderCategories(
-    transactions
-  );
-
-  renderChart(
-    transactions
-  );
-
-}
-
-
-/* =========================
-   SAVINGS
-========================= */
-
-function renderSavings(){
+function getTotalSavings(){
 
   let goals = [];
 
@@ -1123,26 +1048,155 @@ function renderSavings(){
     !Array.isArray(goals)
   ){
 
-    goals = [];
+    return 0;
 
   }
 
 
-  let totalSaved = 0;
+  return goals.reduce(
+    (total, goal) => {
+
+      return total +
+        (Number(goal.saved) || 0);
+
+    },
+    0
+  );
+
+}
 
 
-  goals.forEach(goal => {
+/* =========================
+   DASHBOARD SUMMARY
+========================= */
 
-    totalSaved +=
-      Number(goal.saved) || 0;
+function renderDashboard(){
 
-  });
+  const transactions =
+    getTransactions();
+
+
+  let income = 0;
+
+  let expenses = 0;
+
+
+  transactions.forEach(
+    transaction => {
+
+      const amount =
+        Number(
+          transaction.amount
+        ) || 0;
+
+
+      if(
+        transaction.type === "income"
+      ){
+
+        income += amount;
+
+      }else{
+
+        expenses += amount;
+
+      }
+
+    }
+  );
+
+
+  /*
+    Savings are now treated
+    as money moved away from
+    the available balance.
+
+    Example:
+
+    Income    = 5000
+    Expenses  = 250
+    Savings   = 500
+
+    Remaining =
+    5000 - 250 - 500
+    = 4250
+  */
+
+  const savings =
+    getTotalSavings();
+
+
+  const balance =
+    income -
+    expenses -
+    savings;
+
+
+  document.getElementById(
+    "totalIncome"
+  ).textContent =
+    formatMoney(
+      income
+    );
+
+
+  document.getElementById(
+    "totalExpenses"
+  ).textContent =
+    formatMoney(
+      expenses
+    );
+
+
+  document.getElementById(
+    "remainingBalance"
+  ).textContent =
+    formatMoney(
+      balance
+    );
 
 
   document.getElementById(
     "totalSavings"
   ).textContent =
-    formatMoney(totalSaved);
+    formatMoney(
+      savings
+    );
+
+
+  renderTransactions(
+    transactions
+  );
+
+
+  renderCategories(
+    transactions
+  );
+
+
+  renderChart(
+    transactions
+  );
+
+}
+
+
+/* =========================
+   SAVINGS
+========================= */
+
+function renderSavings(){
+
+  const totalSaved =
+    getTotalSavings();
+
+
+  document.getElementById(
+    "totalSavings"
+  ).textContent =
+    formatMoney(
+      totalSaved
+    );
 
 }
 
@@ -1154,6 +1208,7 @@ function renderSavings(){
 function renderGoal(){
 
   let goals = [];
+
 
   try{
 
@@ -1169,23 +1224,6 @@ function renderGoal(){
     goals = [];
 
   }
-
-
-  /*
-    goals.html stores goals
-    as an array.
-
-    Example:
-
-    [
-      {
-        id: 123,
-        name: "New Laptop",
-        target: 2000,
-        saved: 500
-      }
-    ]
-  */
 
 
   if(
@@ -1234,62 +1272,25 @@ function renderGoal(){
   }
 
 
-  /*
-    For the dashboard we display
-    the first active goal.
-  */
-
   const goal =
     goals[0];
 
 
   const target =
-    Number(goal.target) || 0;
+    Number(
+      goal.target
+    ) || 0;
 
 
   const saved =
-    Number(goal.saved) || 0;
+    Number(
+      goal.saved
+    ) || 0;
 
 
   if(
     target <= 0
   ){
-
-    document.getElementById(
-      "goalName"
-    ).textContent =
-      "No savings goal yet";
-
-
-    document.getElementById(
-      "goalDescription"
-    ).textContent =
-      "Create your first savings goal";
-
-
-    document.getElementById(
-      "goalPercent"
-    ).textContent =
-      "0%";
-
-
-    document.getElementById(
-      "goalProgress"
-    ).style.width =
-      "0%";
-
-
-    document.getElementById(
-      "goalSaved"
-    ).textContent =
-      "$0 saved";
-
-
-    document.getElementById(
-      "goalRemaining"
-    ).textContent =
-      "$0 remaining";
-
 
     return;
 
@@ -1300,14 +1301,18 @@ function renderGoal(){
     Math.min(
       100,
       Math.round(
-        (saved / target) * 100
+        (
+          saved /
+          target
+        ) * 100
       )
     );
 
 
   const remaining =
     Math.max(
-      target - saved,
+      target -
+      saved,
       0
     );
 
@@ -1323,32 +1328,40 @@ function renderGoal(){
     "goalDescription"
   ).textContent =
     "Target amount: " +
-    formatMoney(target);
+    formatMoney(
+      target
+    );
 
 
   document.getElementById(
     "goalPercent"
   ).textContent =
-    percent + "%";
+    percent +
+    "%";
 
 
   document.getElementById(
     "goalProgress"
   ).style.width =
-    percent + "%";
+    percent +
+    "%";
 
 
   document.getElementById(
     "goalSaved"
   ).textContent =
-    formatMoney(saved) +
+    formatMoney(
+      saved
+    ) +
     " saved";
 
 
   document.getElementById(
     "goalRemaining"
   ).textContent =
-    formatMoney(remaining) +
+    formatMoney(
+      remaining
+    ) +
     " remaining";
 
 }
@@ -1387,10 +1400,17 @@ function renderTransactions(
     [...transactions]
       .sort(
         (a,b) =>
-          new Date(b.date || 0) -
-          new Date(a.date || 0)
+          new Date(
+            b.date || 0
+          ) -
+          new Date(
+            a.date || 0
+          )
       )
-      .slice(0,5);
+      .slice(
+        0,
+        5
+      );
 
 
   container.innerHTML =
@@ -1398,7 +1418,8 @@ function renderTransactions(
       transaction => {
 
         const isIncome =
-          transaction.type === "income";
+          transaction.type ===
+          "income";
 
 
         const amount =
@@ -1440,7 +1461,9 @@ function renderTransactions(
             <div class="transaction-info">
 
               <div class="transaction-name">
-                ${escapeHTML(name)}
+                ${escapeHTML(
+                  name
+                )}
               </div>
 
               <div class="transaction-date">
@@ -1459,7 +1482,9 @@ function renderTransactions(
                   : "expense"
               }"
             >
-              ${sign}${formatMoney(amount)}
+              ${sign}${formatMoney(
+                amount
+              )}
             </div>
 
           </div>
@@ -1489,7 +1514,8 @@ function renderCategories(
   const expenses =
     transactions.filter(
       transaction =>
-        transaction.type !== "income"
+        transaction.type !==
+        "income"
     );
 
 
@@ -1527,7 +1553,8 @@ function renderCategories(
 
       categories[category] =
         (
-          categories[category] || 0
+          categories[category] ||
+          0
         ) + amount;
 
     }
@@ -1542,7 +1569,10 @@ function renderCategories(
       (a,b) =>
         b[1] - a[1]
     )
-    .slice(0,5);
+    .slice(
+      0,
+      5
+    );
 
 
   const total =
@@ -1583,7 +1613,10 @@ function renderCategories(
         const percent =
           total > 0
             ? Math.round(
-                (amount / total) * 100
+                (
+                  amount /
+                  total
+                ) * 100
               )
             : 0;
 
@@ -1602,7 +1635,9 @@ function renderCategories(
             <div class="category-info">
 
               <div class="category-name">
-                ${escapeHTML(category)}
+                ${escapeHTML(
+                  category
+                )}
               </div>
 
               <div class="category-progress">
@@ -1618,7 +1653,9 @@ function renderCategories(
             </div>
 
             <div class="category-amount">
-              ${formatMoney(amount)}
+              ${formatMoney(
+                amount
+              )}
             </div>
 
           </div>
@@ -1646,6 +1683,7 @@ function renderChart(
 
 
   const months = [
+
     "Jan",
     "Feb",
     "Mar",
@@ -1658,18 +1696,22 @@ function renderChart(
     "Oct",
     "Nov",
     "Dec"
+
   ];
 
 
   const values =
-    new Array(12).fill(0);
+    new Array(
+      12
+    ).fill(0);
 
 
   transactions.forEach(
     transaction => {
 
       if(
-        transaction.type === "income"
+        transaction.type ===
+        "income"
       ){
 
         return;
@@ -1690,7 +1732,9 @@ function renderChart(
 
 
       if(
-        !isNaN(date.getTime())
+        !isNaN(
+          date.getTime()
+        )
       ){
 
         values[
@@ -1772,27 +1816,29 @@ function escapeHTML(
   value
 ){
 
-  return String(value || "")
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+  return String(
+    value || ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
@@ -1858,11 +1904,6 @@ function init(){
 
 }
 
-
-/*
-  Update dashboard automatically
-  when returning to the page.
-*/
 
 window.addEventListener(
   "pageshow",
