@@ -8,23 +8,31 @@
 
   <meta
     name="description"
-    content="Smart Budget — a simple and elegant personal finance planner."
+    content="Smart Budget — a premium personal finance planner for managing income, expenses, budgets and savings."
   >
 
   <style>
     :root{
-      --bg:#f4f1eb;
+      --bg:#f5f3ee;
       --surface:#ffffff;
-      --surface-soft:#faf8f4;
-      --text:#1f211e;
-      --muted:#77786f;
-      --line:#e6e1d8;
+      --surface-2:#faf9f6;
+      --text:#20211e;
+      --muted:#85857d;
+      --line:#e9e6df;
 
-      --income:#527a63;
-      --expense:#a65d58;
-      --accent:#9b8058;
+      --dark:#20221f;
+      --dark-2:#30332e;
 
-      --shadow:0 18px 50px rgba(38,34,27,.08);
+      --green:#537965;
+      --green-soft:#edf4ef;
+
+      --red:#a55f5b;
+      --red-soft:#f8eeee;
+
+      --gold:#a2855d;
+      --gold-soft:#f5f0e7;
+
+      --shadow:0 14px 45px rgba(31,30,25,.07);
       --radius:22px;
     }
 
@@ -32,6 +40,10 @@
       box-sizing:border-box;
       margin:0;
       padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
     }
 
     body{
@@ -47,8 +59,8 @@
     }
 
     button,
-    input,
-    select{
+    select,
+    input{
       font:inherit;
     }
 
@@ -56,95 +68,23 @@
       cursor:pointer;
     }
 
+    /* =========================
+       APP
+    ========================== */
+
     .app{
-      display:flex;
       min-height:100vh;
     }
 
-    /* =========================
-       SIDEBAR
-    ========================== */
-
-    .sidebar{
-      width:250px;
-      background:#20221f;
-      color:#fff;
-      padding:28px 20px;
-      position:fixed;
-      left:0;
-      top:0;
-      bottom:0;
-      display:flex;
-      flex-direction:column;
-      z-index:20;
-    }
-
-    .brand{
-      padding:0 12px 32px;
-    }
-
-    .brand-name{
-      font-size:23px;
-      font-weight:700;
-      letter-spacing:-.5px;
-    }
-
-    .brand-subtitle{
-      color:#a8aaa2;
-      font-size:12px;
-      margin-top:5px;
-    }
-
-    .nav{
-      display:flex;
-      flex-direction:column;
-      gap:7px;
-    }
-
-    .nav-item{
-      width:100%;
-      border:0;
-      background:transparent;
-      color:#aeb0a8;
-      padding:13px 14px;
-      border-radius:13px;
-      text-align:left;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      transition:.2s ease;
-    }
-
-    .nav-item:hover,
-    .nav-item.active{
-      background:#30332e;
-      color:#fff;
-    }
-
-    .nav-icon{
-      width:22px;
-      text-align:center;
-      font-size:16px;
-    }
-
-    .sidebar-bottom{
-      margin-top:auto;
-      padding:15px 12px;
-      border-top:1px solid rgba(255,255,255,.08);
-      color:#92958d;
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    /* =========================
-       MAIN
-    ========================== */
-
     .main{
-      width:calc(100% - 250px);
-      margin-left:250px;
-      padding:34px;
+      max-width:1440px;
+      margin:auto;
+      padding:28px 32px 50px;
     }
+
+    /* =========================
+       TOP HEADER
+    ========================== */
 
     .topbar{
       display:flex;
@@ -154,112 +94,192 @@
       margin-bottom:30px;
     }
 
-    .page-title h1{
-      font-size:32px;
-      letter-spacing:-1px;
+    .brand-mobile{
+      display:none;
     }
 
-    .page-title p{
+    .welcome h1{
+      font-size:31px;
+      line-height:1.1;
+      letter-spacing:-1.1px;
+      font-weight:750;
+    }
+
+    .welcome p{
+      margin-top:7px;
       color:var(--muted);
-      margin-top:6px;
       font-size:14px;
     }
 
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
     .month-select{
+      appearance:none;
       background:var(--surface);
       border:1px solid var(--line);
       border-radius:13px;
-      padding:11px 15px;
+      padding:11px 38px 11px 14px;
       color:var(--text);
       outline:none;
-      box-shadow:0 6px 20px rgba(0,0,0,.03);
+      box-shadow:0 5px 18px rgba(0,0,0,.03);
+      background-image:
+        linear-gradient(45deg,transparent 50%,#777 50%),
+        linear-gradient(135deg,#777 50%,transparent 50%);
+      background-position:
+        calc(100% - 17px) 50%,
+        calc(100% - 12px) 50%;
+      background-size:5px 5px,5px 5px;
+      background-repeat:no-repeat;
+    }
+
+    .icon-button{
+      width:43px;
+      height:43px;
+      border:1px solid var(--line);
+      border-radius:13px;
+      background:var(--surface);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .add-button{
+      height:43px;
+      border:0;
+      border-radius:13px;
+      padding:0 17px;
+      background:var(--dark);
+      color:#fff;
+      font-size:13px;
+      font-weight:650;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      box-shadow:0 9px 22px rgba(31,32,29,.15);
+    }
+
+    .add-button span{
+      font-size:18px;
+      line-height:0;
     }
 
     /* =========================
-       SUMMARY CARDS
+       SUMMARY
     ========================== */
 
     .summary-grid{
       display:grid;
       grid-template-columns:repeat(4,1fr);
-      gap:18px;
-      margin-bottom:22px;
+      gap:16px;
+      margin-bottom:20px;
     }
 
     .summary-card{
       background:var(--surface);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:22px;
+      padding:20px;
       box-shadow:var(--shadow);
+      min-width:0;
+    }
+
+    .summary-card.dark{
+      background:var(--dark);
+      border-color:var(--dark);
+      color:#fff;
     }
 
     .summary-top{
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      margin-bottom:20px;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:22px;
     }
 
     .summary-label{
       color:var(--muted);
-      font-size:13px;
+      font-size:12px;
+      font-weight:550;
+    }
+
+    .dark .summary-label{
+      color:#aeb1a9;
     }
 
     .summary-icon{
-      width:38px;
-      height:38px;
-      border-radius:12px;
+      width:35px;
+      height:35px;
+      border-radius:11px;
+      background:var(--surface-2);
       display:flex;
       align-items:center;
       justify-content:center;
-      background:var(--surface-soft);
-      font-size:17px;
+      font-size:15px;
+    }
+
+    .income .summary-icon{
+      background:var(--green-soft);
+      color:var(--green);
+    }
+
+    .expense .summary-icon{
+      background:var(--red-soft);
+      color:var(--red);
+    }
+
+    .savings .summary-icon{
+      background:var(--gold-soft);
+      color:var(--gold);
+    }
+
+    .dark .summary-icon{
+      background:var(--dark-2);
+      color:#fff;
     }
 
     .summary-value{
-      font-size:27px;
-      font-weight:700;
-      letter-spacing:-.7px;
+      font-size:26px;
+      font-weight:750;
+      letter-spacing:-.8px;
     }
 
-    .summary-note{
+    .summary-bottom{
+      margin-top:9px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
       color:var(--muted);
-      font-size:12px;
-      margin-top:7px;
     }
 
-    .income-card .summary-icon{
-      color:var(--income);
+    .dark .summary-bottom{
+      color:#aeb1a9;
     }
 
-    .expense-card .summary-icon{
-      color:var(--expense);
+    .trend-up{
+      color:var(--green);
+      font-weight:700;
     }
 
-    .balance-card{
-      background:#252823;
-      color:#fff;
-      border-color:#252823;
-    }
-
-    .balance-card .summary-label,
-    .balance-card .summary-note{
-      color:#aeb1a8;
-    }
-
-    .balance-card .summary-icon{
-      background:#343730;
+    .trend-down{
+      color:var(--red);
+      font-weight:700;
     }
 
     /* =========================
-       CONTENT GRID
+       MAIN GRID
     ========================== */
 
-    .content-grid{
+    .dashboard-grid{
       display:grid;
-      grid-template-columns:minmax(0,1.65fr) minmax(280px,.9fr);
-      gap:22px;
+      grid-template-columns:minmax(0,1.65fr) minmax(310px,.9fr);
+      gap:20px;
     }
 
     .panel{
@@ -267,62 +287,94 @@
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
+      overflow:hidden;
     }
 
     .panel-header{
+      padding:20px 21px 17px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:22px 22px 18px;
+      gap:15px;
       border-bottom:1px solid var(--line);
     }
 
-    .panel-title{
-      font-size:17px;
-      font-weight:650;
+    .panel-heading{
+      font-size:15px;
+      font-weight:700;
+      letter-spacing:-.2px;
     }
 
-    .panel-link{
+    .panel-subtitle{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:4px;
+    }
+
+    .panel-action{
       border:0;
       background:transparent;
-      color:var(--accent);
-      font-size:12px;
+      color:var(--gold);
+      font-size:11px;
+      font-weight:650;
     }
 
     /* =========================
        CHART
     ========================== */
 
-    .chart-wrap{
-      padding:25px 22px 22px;
+    .chart-controls{
+      display:flex;
+      gap:4px;
+      background:var(--surface-2);
+      padding:3px;
+      border-radius:9px;
+    }
+
+    .chart-control{
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      border-radius:7px;
+      padding:6px 9px;
+      font-size:10px;
+    }
+
+    .chart-control.active{
+      background:var(--surface);
+      color:var(--text);
+      box-shadow:0 2px 7px rgba(0,0,0,.05);
+    }
+
+    .chart-area{
+      padding:24px 22px 19px;
     }
 
     .chart{
-      height:245px;
+      height:250px;
       display:flex;
       align-items:flex-end;
-      justify-content:space-between;
-      gap:13px;
+      gap:14px;
       position:relative;
-      padding:0 5px 28px;
+      padding:0 3px 30px;
       border-bottom:1px solid var(--line);
     }
 
-    .chart::before,
-    .chart::after{
-      content:"";
+    .chart-grid{
       position:absolute;
       left:0;
       right:0;
-      border-top:1px dashed #e9e5dd;
+      top:0;
+      bottom:30px;
+      pointer-events:none;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
 
-    .chart::before{
-      top:35%;
-    }
-
-    .chart::after{
-      top:67%;
+    .grid-line{
+      width:100%;
+      border-top:1px dashed #ebe8e1;
     }
 
     .bar-group{
@@ -331,124 +383,143 @@
       display:flex;
       align-items:flex-end;
       justify-content:center;
-      gap:5px;
+      gap:4px;
       position:relative;
       z-index:2;
+      min-width:15px;
     }
 
     .bar{
-      width:11px;
-      min-height:3px;
-      border-radius:6px 6px 2px 2px;
-      transition:.25s ease;
+      width:9px;
+      min-height:4px;
+      border-radius:7px 7px 2px 2px;
+      transition:.2s ease;
     }
 
     .bar:hover{
-      transform:translateY(-4px);
+      transform:translateY(-3px);
     }
 
-    .bar.income{
-      background:#71947d;
+    .bar-income{
+      background:#6f927d;
     }
 
-    .bar.expense{
-      background:#b97872;
+    .bar-expense{
+      background:#b67570;
     }
 
     .bar-label{
       position:absolute;
-      bottom:-25px;
-      color:#92928b;
+      bottom:-24px;
+      font-size:9px;
+      color:#96968f;
+    }
+
+    .chart-footer{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-top:17px;
+      color:var(--muted);
       font-size:10px;
     }
 
-    .chart-legend{
-      display:flex;
-      gap:18px;
-      margin-top:18px;
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .legend-item{
+    .legend{
       display:flex;
       align-items:center;
       gap:6px;
     }
 
     .legend-dot{
-      width:8px;
-      height:8px;
+      width:7px;
+      height:7px;
       border-radius:50%;
     }
 
-    .legend-income{
-      background:#71947d;
+    .dot-income{
+      background:#6f927d;
     }
 
-    .legend-expense{
-      background:#b97872;
+    .dot-expense{
+      background:#b67570;
     }
 
     /* =========================
-       RIGHT SIDE
+       RIGHT COLUMN
     ========================== */
 
-    .goal{
-      padding:23px;
+    .goal-card{
+      padding:20px 21px 22px;
     }
 
-    .goal-header{
+    .goal-top{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap:10px;
+      gap:15px;
     }
 
-    .goal-title{
-      font-size:15px;
-      font-weight:650;
+    .goal-name{
+      font-size:14px;
+      font-weight:700;
     }
 
-    .goal-subtitle{
-      font-size:12px;
+    .goal-description{
       color:var(--muted);
+      font-size:11px;
       margin-top:5px;
     }
 
     .goal-percent{
-      font-size:19px;
-      font-weight:700;
+      font-size:20px;
+      font-weight:750;
     }
 
-    .progress{
+    .goal-progress{
       height:9px;
-      background:#ece8e0;
-      border-radius:99px;
+      margin:19px 0 11px;
+      background:#eeeae2;
+      border-radius:50px;
       overflow:hidden;
-      margin:20px 0 11px;
     }
 
-    .progress-fill{
-      width:64%;
+    .goal-progress span{
+      display:block;
       height:100%;
-      background:var(--accent);
+      width:64%;
+      background:var(--gold);
       border-radius:inherit;
     }
 
-    .goal-footer{
+    .goal-numbers{
       display:flex;
       justify-content:space-between;
       color:var(--muted);
-      font-size:11px;
+      font-size:10px;
     }
 
+    .goal-button{
+      width:100%;
+      height:37px;
+      margin-top:17px;
+      border:1px solid var(--line);
+      background:var(--surface);
+      color:var(--text);
+      border-radius:11px;
+      font-size:11px;
+      font-weight:650;
+    }
+
+    /* =========================
+       CATEGORIES
+    ========================== */
+
     .category-list{
-      padding:5px 22px 20px;
+      padding:5px 21px 17px;
     }
 
     .category{
-      padding:15px 0;
+      padding:13px 0;
       border-bottom:1px solid var(--line);
     }
 
@@ -460,42 +531,43 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      margin-bottom:9px;
+      margin-bottom:8px;
     }
 
     .category-name{
-      font-size:12px;
+      font-size:11px;
+      font-weight:600;
     }
 
-    .category-value{
-      font-size:12px;
-      font-weight:650;
+    .category-amount{
+      font-size:11px;
+      font-weight:700;
     }
 
-    .category-progress{
+    .category-track{
       height:5px;
-      background:#efebe4;
+      background:#eeeae3;
       border-radius:20px;
       overflow:hidden;
     }
 
-    .category-progress span{
+    .category-track span{
       display:block;
       height:100%;
       border-radius:20px;
-      background:#8c8b82;
+      background:#898a82;
     }
 
     /* =========================
        TRANSACTIONS
     ========================== */
 
-    .transactions{
-      margin-top:22px;
+    .transactions-panel{
+      margin-top:20px;
     }
 
     .transaction-list{
-      padding:5px 22px 18px;
+      padding:4px 21px 10px;
     }
 
     .transaction{
@@ -503,7 +575,7 @@
       align-items:center;
       justify-content:space-between;
       gap:15px;
-      padding:16px 0;
+      padding:15px 0;
       border-bottom:1px solid var(--line);
     }
 
@@ -511,54 +583,58 @@
       border-bottom:0;
     }
 
-    .transaction-left{
+    .transaction-main{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:11px;
       min-width:0;
     }
 
     .transaction-icon{
-      width:40px;
-      height:40px;
-      flex:0 0 40px;
+      width:39px;
+      height:39px;
+      flex:0 0 39px;
       border-radius:12px;
-      background:var(--surface-soft);
       display:flex;
       align-items:center;
       justify-content:center;
+      background:var(--surface-2);
+      font-size:16px;
     }
 
     .transaction-name{
-      font-size:13px;
-      font-weight:600;
+      font-size:12px;
+      font-weight:650;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
-    .transaction-date{
-      color:var(--muted);
-      font-size:11px;
+    .transaction-meta{
       margin-top:4px;
+      color:var(--muted);
+      font-size:10px;
     }
 
     .transaction-amount{
-      font-size:13px;
-      font-weight:700;
+      font-size:12px;
+      font-weight:750;
       white-space:nowrap;
     }
 
     .transaction-amount.expense{
-      color:var(--expense);
+      color:var(--red);
     }
 
     .transaction-amount.income{
-      color:var(--income);
+      color:var(--green);
     }
 
     /* =========================
-       MOBILE HEADER
+       BOTTOM NAV MOBILE
     ========================== */
 
-    .mobile-header{
+    .bottom-nav{
       display:none;
     }
 
@@ -566,236 +642,288 @@
        RESPONSIVE
     ========================== */
 
-    @media(max-width:1100px){
+    @media(max-width:1050px){
+
       .summary-grid{
         grid-template-columns:repeat(2,1fr);
       }
 
-      .content-grid{
+      .dashboard-grid{
         grid-template-columns:1fr;
       }
+
     }
 
-    @media(max-width:800px){
-      .sidebar{
-        display:none;
+    @media(max-width:760px){
+
+      body{
+        padding-bottom:75px;
       }
 
       .main{
-        width:100%;
-        margin-left:0;
-        padding:18px;
-        padding-bottom:90px;
-      }
-
-      .mobile-header{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        margin-bottom:24px;
-      }
-
-      .mobile-brand{
-        font-size:20px;
-        font-weight:700;
-      }
-
-      .mobile-menu{
-        width:40px;
-        height:40px;
-        border:1px solid var(--line);
-        background:var(--surface);
-        border-radius:12px;
+        padding:18px 15px 35px;
       }
 
       .topbar{
-        margin-bottom:20px;
-        align-items:flex-start;
+        margin-bottom:22px;
       }
 
-      .page-title h1{
-        font-size:27px;
+      .brand-mobile{
+        display:block;
+        font-size:17px;
+        font-weight:800;
+        letter-spacing:.2px;
+      }
+
+      .welcome h1{
+        font-size:25px;
+      }
+
+      .welcome p{
+        font-size:12px;
+      }
+
+      .top-actions{
+        gap:7px;
       }
 
       .month-select{
-        padding:9px 10px;
-        font-size:12px;
+        display:none;
+      }
+
+      .icon-button{
+        width:39px;
+        height:39px;
+        border-radius:12px;
+      }
+
+      .add-button{
+        height:39px;
+        padding:0 12px;
+        border-radius:12px;
+        font-size:11px;
       }
 
       .summary-grid{
         grid-template-columns:1fr 1fr;
-        gap:12px;
+        gap:10px;
       }
 
       .summary-card{
-        padding:17px;
+        padding:16px;
         border-radius:18px;
       }
 
+      .summary-top{
+        margin-bottom:17px;
+      }
+
       .summary-value{
-        font-size:21px;
+        font-size:20px;
+      }
+
+      .summary-bottom{
+        font-size:9px;
       }
 
       .summary-icon{
-        width:33px;
-        height:33px;
+        width:31px;
+        height:31px;
+        border-radius:9px;
+      }
+
+      .panel{
+        border-radius:19px;
       }
 
       .panel-header{
-        padding:18px;
+        padding:17px;
       }
 
-      .chart-wrap{
-        padding:20px 16px;
+      .chart-area{
+        padding:19px 15px 18px;
       }
 
       .chart{
-        gap:6px;
-        height:210px;
+        height:220px;
+        gap:7px;
       }
 
       .bar{
-        width:8px;
+        width:7px;
       }
 
-      .goal{
+      .chart-controls{
+        display:none;
+      }
+
+      .goal-card{
         padding:18px;
       }
 
       .category-list,
       .transaction-list{
-        padding-left:18px;
-        padding-right:18px;
+        padding-left:17px;
+        padding-right:17px;
       }
+
+      .transactions-panel{
+        margin-top:16px;
+      }
+
+      .bottom-nav{
+        display:flex;
+        position:fixed;
+        left:10px;
+        right:10px;
+        bottom:10px;
+        height:62px;
+        background:rgba(32,34,31,.97);
+        border-radius:19px;
+        z-index:100;
+        align-items:center;
+        justify-content:space-around;
+        padding:5px;
+        box-shadow:0 15px 35px rgba(0,0,0,.2);
+      }
+
+      .bottom-item{
+        border:0;
+        background:transparent;
+        color:#979b93;
+        height:52px;
+        min-width:55px;
+        border-radius:14px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:3px;
+        font-size:9px;
+      }
+
+      .bottom-item span{
+        font-size:16px;
+        line-height:1;
+      }
+
+      .bottom-item.active{
+        background:#30332e;
+        color:#fff;
+      }
+
+      .bottom-add{
+        width:45px;
+        height:45px;
+        border:0;
+        border-radius:50%;
+        background:#fff;
+        color:#20221f;
+        font-size:24px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 7px 18px rgba(0,0,0,.2);
+      }
+
     }
 
-    @media(max-width:480px){
+    @media(max-width:430px){
+
       .main{
-        padding:14px;
+        padding-left:12px;
+        padding-right:12px;
       }
 
-      .mobile-header{
-        margin-bottom:18px;
+      .welcome h1{
+        font-size:22px;
       }
 
-      .page-title h1{
-        font-size:24px;
+      .welcome p{
+        font-size:11px;
       }
 
-      .page-title p{
-        font-size:12px;
+      .add-button{
+        width:39px;
+        padding:0;
+        justify-content:center;
+        font-size:0;
       }
 
-      .summary-grid{
-        gap:9px;
+      .add-button span{
+        font-size:20px;
       }
 
       .summary-card{
         padding:14px;
       }
 
-      .summary-top{
-        margin-bottom:14px;
-      }
-
       .summary-label{
-        font-size:11px;
+        font-size:10px;
       }
 
       .summary-value{
         font-size:18px;
       }
 
-      .summary-note{
-        font-size:10px;
+      .summary-icon{
+        width:29px;
+        height:29px;
+        font-size:13px;
       }
 
       .chart{
-        height:185px;
+        height:195px;
+        gap:4px;
       }
 
-      .transaction-icon{
-        width:36px;
-        height:36px;
-        flex-basis:36px;
+      .bar{
+        width:6px;
+      }
+
+      .panel-heading{
+        font-size:14px;
+      }
+
+      .panel-subtitle{
+        font-size:10px;
       }
 
       .transaction-name{
-        font-size:12px;
+        max-width:150px;
       }
 
-      .transaction-amount{
-        font-size:12px;
-      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="app">
+  <main class="main">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <!-- TOP BAR -->
+    <header class="topbar">
 
-      <div class="brand">
-        <div class="brand-name">SMART BUDGET</div>
-        <div class="brand-subtitle">Personal Finance Planner</div>
-      </div>
+      <div class="welcome">
 
-      <nav class="nav">
-
-        <button class="nav-item active">
-          <span class="nav-icon">⌂</span>
-          Dashboard
-        </button>
-
-        <button class="nav-item">
-          <span class="nav-icon">↕</span>
-          Transactions
-        </button>
-
-        <button class="nav-item">
-          <span class="nav-icon">◫</span>
-          Budget
-        </button>
-
-        <button class="nav-item">
-          <span class="nav-icon">◎</span>
-          Savings Goals
-        </button>
-
-        <button class="nav-item">
-          <span class="nav-icon">◌</span>
-          Reports
-        </button>
-
-      </nav>
-
-      <div class="sidebar-bottom">
-        Your personal finances,
-        organized beautifully.
-      </div>
-
-    </aside>
-
-
-    <!-- Main -->
-    <main class="main">
-
-      <div class="mobile-header">
-        <div class="mobile-brand">SMART BUDGET</div>
-        <button class="mobile-menu">☰</button>
-      </div>
-
-
-      <!-- Topbar -->
-      <header class="topbar">
-
-        <div class="page-title">
-          <h1>Good morning 👋</h1>
-          <p>Here's your financial overview for this month.</p>
+        <div class="brand-mobile">
+          SMART BUDGET
         </div>
+
+        <h1>Good morning 👋</h1>
+
+        <p>
+          Here's your financial overview for this month.
+        </p>
+
+      </div>
+
+
+      <div class="top-actions">
+
+        <button class="icon-button" aria-label="Notifications">
+          ♧
+        </button>
 
         <select class="month-select">
           <option>October 2026</option>
@@ -804,195 +932,396 @@
           <option>July 2026</option>
         </select>
 
-      </header>
+        <button class="add-button">
+          <span>+</span>
+          Add Transaction
+        </button>
+
+      </div>
+
+    </header>
 
 
-      <!-- Summary -->
-      <section class="summary-grid">
+    <!-- SUMMARY CARDS -->
+    <section class="summary-grid">
 
-        <div class="summary-card income-card">
+      <article class="summary-card income">
 
-          <div class="summary-top">
-            <span class="summary-label">Total Income</span>
-            <div class="summary-icon">↗</div>
+        <div class="summary-top">
+          <span class="summary-label">Total Income</span>
+          <div class="summary-icon">↗</div>
+        </div>
+
+        <div class="summary-value">$4,850.00</div>
+
+        <div class="summary-bottom">
+          <span class="trend-up">↑ 8.4%</span>
+          from last month
+        </div>
+
+      </article>
+
+
+      <article class="summary-card expense">
+
+        <div class="summary-top">
+          <span class="summary-label">Total Expenses</span>
+          <div class="summary-icon">↘</div>
+        </div>
+
+        <div class="summary-value">$2,176.40</div>
+
+        <div class="summary-bottom">
+          <span class="trend-down">↑ 4.2%</span>
+          from last month
+        </div>
+
+      </article>
+
+
+      <article class="summary-card dark">
+
+        <div class="summary-top">
+          <span class="summary-label">Remaining Balance</span>
+          <div class="summary-icon">$</div>
+        </div>
+
+        <div class="summary-value">$2,673.60</div>
+
+        <div class="summary-bottom">
+          Available to use
+        </div>
+
+      </article>
+
+
+      <article class="summary-card savings">
+
+        <div class="summary-top">
+          <span class="summary-label">Total Savings</span>
+          <div class="summary-icon">◇</div>
+        </div>
+
+        <div class="summary-value">$1,250.00</div>
+
+        <div class="summary-bottom">
+          <span class="trend-up">25.8%</span>
+          of your income
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- DASHBOARD GRID -->
+    <section class="dashboard-grid">
+
+
+      <!-- CHART -->
+      <article class="panel">
+
+        <div class="panel-header">
+
+          <div>
+            <div class="panel-heading">
+              Spending Overview
+            </div>
+
+            <div class="panel-subtitle">
+              Income compared with expenses
+            </div>
           </div>
 
-          <div class="summary-value">$4,850.00</div>
-          <div class="summary-note">This month</div>
+
+          <div class="chart-controls">
+
+            <button class="chart-control">
+              Week
+            </button>
+
+            <button class="chart-control active">
+              Month
+            </button>
+
+            <button class="chart-control">
+              Year
+            </button>
+
+          </div>
 
         </div>
 
 
-        <div class="summary-card expense-card">
+        <div class="chart-area">
 
-          <div class="summary-top">
-            <span class="summary-label">Total Expenses</span>
-            <div class="summary-icon">↘</div>
-          </div>
+          <div class="chart">
 
-          <div class="summary-value">$2,176.40</div>
-          <div class="summary-note">This month</div>
-
-        </div>
-
-
-        <div class="summary-card balance-card">
-
-          <div class="summary-top">
-            <span class="summary-label">Remaining Balance</span>
-            <div class="summary-icon">$</div>
-          </div>
-
-          <div class="summary-value">$2,673.60</div>
-          <div class="summary-note">Available to use</div>
-
-        </div>
+            <div class="chart-grid">
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+            </div>
 
 
-        <div class="summary-card">
+            <div class="bar-group">
 
-          <div class="summary-top">
-            <span class="summary-label">Savings</span>
-            <div class="summary-icon">◇</div>
-          </div>
+              <div
+                class="bar bar-income"
+                style="height:72%"
+              ></div>
 
-          <div class="summary-value">$1,250.00</div>
-          <div class="summary-note">25.8% of income</div>
+              <div
+                class="bar bar-expense"
+                style="height:38%"
+              ></div>
 
-        </div>
-
-      </section>
-
-
-      <!-- Main content -->
-      <section class="content-grid">
-
-
-        <!-- Spending chart -->
-        <div class="panel">
-
-          <div class="panel-header">
-            <div class="panel-title">Income & Expenses</div>
-            <button class="panel-link">View report →</button>
-          </div>
-
-          <div class="chart-wrap">
-
-            <div class="chart">
-
-              <div class="bar-group">
-                <div class="bar income" style="height:72%"></div>
-                <div class="bar expense" style="height:40%"></div>
-                <span class="bar-label">1</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:58%"></div>
-                <div class="bar expense" style="height:31%"></div>
-                <span class="bar-label">5</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:66%"></div>
-                <div class="bar expense" style="height:48%"></div>
-                <span class="bar-label">10</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:80%"></div>
-                <div class="bar expense" style="height:51%"></div>
-                <span class="bar-label">15</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:63%"></div>
-                <div class="bar expense" style="height:44%"></div>
-                <span class="bar-label">20</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:76%"></div>
-                <div class="bar expense" style="height:58%"></div>
-                <span class="bar-label">25</span>
-              </div>
-
-              <div class="bar-group">
-                <div class="bar income" style="height:88%"></div>
-                <div class="bar expense" style="height:49%"></div>
-                <span class="bar-label">30</span>
-              </div>
+              <span class="bar-label">1</span>
 
             </div>
 
 
-            <div class="chart-legend">
+            <div class="bar-group">
 
-              <div class="legend-item">
-                <span class="legend-dot legend-income"></span>
-                Income
-              </div>
+              <div
+                class="bar bar-income"
+                style="height:59%"
+              ></div>
 
-              <div class="legend-item">
-                <span class="legend-dot legend-expense"></span>
-                Expenses
-              </div>
+              <div
+                class="bar bar-expense"
+                style="height:31%"
+              ></div>
 
+              <span class="bar-label">5</span>
+
+            </div>
+
+
+            <div class="bar-group">
+
+              <div
+                class="bar bar-income"
+                style="height:65%"
+              ></div>
+
+              <div
+                class="bar bar-expense"
+                style="height:48%"
+              ></div>
+
+              <span class="bar-label">10</span>
+
+            </div>
+
+
+            <div class="bar-group">
+
+              <div
+                class="bar bar-income"
+                style="height:81%"
+              ></div>
+
+              <div
+                class="bar bar-expense"
+                style="height:52%"
+              ></div>
+
+              <span class="bar-label">15</span>
+
+            </div>
+
+
+            <div class="bar-group">
+
+              <div
+                class="bar bar-income"
+                style="height:64%"
+              ></div>
+
+              <div
+                class="bar bar-expense"
+                style="height:43%"
+              ></div>
+
+              <span class="bar-label">20</span>
+
+            </div>
+
+
+            <div class="bar-group">
+
+              <div
+                class="bar bar-income"
+                style="height:75%"
+              ></div>
+
+              <div
+                class="bar bar-expense"
+                style="height:57%"
+              ></div>
+
+              <span class="bar-label">25</span>
+
+            </div>
+
+
+            <div class="bar-group">
+
+              <div
+                class="bar bar-income"
+                style="height:88%"
+              ></div>
+
+              <div
+                class="bar bar-expense"
+                style="height:49%"
+              ></div>
+
+              <span class="bar-label">30</span>
+
+            </div>
+
+          </div>
+
+
+          <div class="chart-footer">
+
+            <div class="legend">
+              <span class="legend-dot dot-income"></span>
+              Income
+            </div>
+
+            <div class="legend">
+              <span class="legend-dot dot-expense"></span>
+              Expenses
             </div>
 
           </div>
 
         </div>
 
+      </article>
 
-        <!-- Right column -->
-        <div class="panel">
+
+      <!-- RIGHT COLUMN -->
+      <div>
+
+
+        <!-- SAVINGS GOAL -->
+        <article class="panel">
 
           <div class="panel-header">
-            <div class="panel-title">Savings Goal</div>
-            <button class="panel-link">Edit</button>
+
+            <div>
+              <div class="panel-heading">
+                Savings Goal
+              </div>
+
+              <div class="panel-subtitle">
+                Your current target
+              </div>
+            </div>
+
+            <button class="panel-action">
+              Edit
+            </button>
+
           </div>
 
 
-          <div class="goal">
+          <div class="goal-card">
 
-            <div class="goal-header">
+            <div class="goal-top">
 
               <div>
-                <div class="goal-title">New Laptop</div>
-                <div class="goal-subtitle">Target: $2,000</div>
+
+                <div class="goal-name">
+                  New Laptop
+                </div>
+
+                <div class="goal-description">
+                  Target amount: $2,000
+                </div>
+
               </div>
 
-              <div class="goal-percent">64%</div>
+              <div class="goal-percent">
+                64%
+              </div>
 
             </div>
 
-            <div class="progress">
-              <div class="progress-fill"></div>
+
+            <div class="goal-progress">
+              <span></span>
             </div>
 
-            <div class="goal-footer">
-              <span>$1,280 saved</span>
-              <span>$720 left</span>
+
+            <div class="goal-numbers">
+
+              <span>
+                $1,280 saved
+              </span>
+
+              <span>
+                $720 remaining
+              </span>
+
             </div>
+
+
+            <button class="goal-button">
+              + Add to savings
+            </button>
 
           </div>
 
+        </article>
+
+
+        <!-- CATEGORIES -->
+        <article class="panel" style="margin-top:20px;">
 
           <div class="panel-header">
-            <div class="panel-title">Spending Categories</div>
+
+            <div>
+              <div class="panel-heading">
+                Spending Categories
+              </div>
+
+              <div class="panel-subtitle">
+                Where your money goes
+              </div>
+            </div>
+
+            <button class="panel-action">
+              View all
+            </button>
+
           </div>
 
 
           <div class="category-list">
 
+
             <div class="category">
 
               <div class="category-top">
-                <span class="category-name">Food & Dining</span>
-                <span class="category-value">$540</span>
+
+                <span class="category-name">
+                  Food & Dining
+                </span>
+
+                <span class="category-amount">
+                  $540
+                </span>
+
               </div>
 
-              <div class="category-progress">
+              <div class="category-track">
                 <span style="width:76%"></span>
               </div>
 
@@ -1002,11 +1331,18 @@
             <div class="category">
 
               <div class="category-top">
-                <span class="category-name">Shopping</span>
-                <span class="category-value">$420</span>
+
+                <span class="category-name">
+                  Shopping
+                </span>
+
+                <span class="category-amount">
+                  $420
+                </span>
+
               </div>
 
-              <div class="category-progress">
+              <div class="category-track">
                 <span style="width:59%"></span>
               </div>
 
@@ -1016,11 +1352,18 @@
             <div class="category">
 
               <div class="category-top">
-                <span class="category-name">Transport</span>
-                <span class="category-value">$280</span>
+
+                <span class="category-name">
+                  Transport
+                </span>
+
+                <span class="category-amount">
+                  $280
+                </span>
+
               </div>
 
-              <div class="category-progress">
+              <div class="category-track">
                 <span style="width:40%"></span>
               </div>
 
@@ -1030,149 +1373,211 @@
             <div class="category">
 
               <div class="category-top">
-                <span class="category-name">Bills</span>
-                <span class="category-value">$610</span>
+
+                <span class="category-name">
+                  Bills
+                </span>
+
+                <span class="category-amount">
+                  $610
+                </span>
+
               </div>
 
-              <div class="category-progress">
+              <div class="category-track">
                 <span style="width:84%"></span>
               </div>
 
             </div>
 
+
           </div>
 
-        </div>
+        </article>
 
-      </section>
+      </div>
+
+    </section>
 
 
-      <!-- Transactions -->
-      <section class="panel transactions">
+    <!-- RECENT TRANSACTIONS -->
+    <section class="panel transactions-panel">
 
-        <div class="panel-header">
+      <div class="panel-header">
 
-          <div class="panel-title">
+        <div>
+
+          <div class="panel-heading">
             Recent Transactions
           </div>
 
-          <button class="panel-link">
-            View all →
-          </button>
+          <div class="panel-subtitle">
+            Your latest financial activity
+          </div>
+
+        </div>
+
+        <button class="panel-action">
+          View all →
+        </button>
+
+      </div>
+
+
+      <div class="transaction-list">
+
+
+        <div class="transaction">
+
+          <div class="transaction-main">
+
+            <div class="transaction-icon">
+              🛒
+            </div>
+
+            <div>
+
+              <div class="transaction-name">
+                Grocery Shopping
+              </div>
+
+              <div class="transaction-meta">
+                Oct 03 · Food & Dining
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="transaction-amount expense">
+            -$86.40
+          </div>
 
         </div>
 
 
-        <div class="transaction-list">
+        <div class="transaction">
 
+          <div class="transaction-main">
 
-          <div class="transaction">
+            <div class="transaction-icon">
+              💼
+            </div>
 
-            <div class="transaction-left">
+            <div>
 
-              <div class="transaction-icon">🛒</div>
+              <div class="transaction-name">
+                Monthly Salary
+              </div>
 
-              <div>
-                <div class="transaction-name">
-                  Grocery Shopping
-                </div>
-
-                <div class="transaction-date">
-                  Oct 03 · Food & Dining
-                </div>
+              <div class="transaction-meta">
+                Oct 01 · Income
               </div>
 
             </div>
 
-            <div class="transaction-amount expense">
-              -$86.40
-            </div>
-
           </div>
 
-
-          <div class="transaction">
-
-            <div class="transaction-left">
-
-              <div class="transaction-icon">💼</div>
-
-              <div>
-                <div class="transaction-name">
-                  Monthly Salary
-                </div>
-
-                <div class="transaction-date">
-                  Oct 01 · Income
-                </div>
-              </div>
-
-            </div>
-
-            <div class="transaction-amount income">
-              +$4,850.00
-            </div>
-
+          <div class="transaction-amount income">
+            +$4,850.00
           </div>
-
-
-          <div class="transaction">
-
-            <div class="transaction-left">
-
-              <div class="transaction-icon">🚗</div>
-
-              <div>
-                <div class="transaction-name">
-                  Fuel
-                </div>
-
-                <div class="transaction-date">
-                  Sep 29 · Transport
-                </div>
-              </div>
-
-            </div>
-
-            <div class="transaction-amount expense">
-              -$72.00
-            </div>
-
-          </div>
-
-
-          <div class="transaction">
-
-            <div class="transaction-left">
-
-              <div class="transaction-icon">📱</div>
-
-              <div>
-                <div class="transaction-name">
-                  Phone Bill
-                </div>
-
-                <div class="transaction-date">
-                  Sep 28 · Bills
-                </div>
-              </div>
-
-            </div>
-
-            <div class="transaction-amount expense">
-              -$45.00
-            </div>
-
-          </div>
-
 
         </div>
 
-      </section>
 
-    </main>
+        <div class="transaction">
 
-  </div>
+          <div class="transaction-main">
+
+            <div class="transaction-icon">
+              🚗
+            </div>
+
+            <div>
+
+              <div class="transaction-name">
+                Fuel
+              </div>
+
+              <div class="transaction-meta">
+                Sep 29 · Transport
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="transaction-amount expense">
+            -$72.00
+          </div>
+
+        </div>
+
+
+        <div class="transaction">
+
+          <div class="transaction-main">
+
+            <div class="transaction-icon">
+              📱
+            </div>
+
+            <div>
+
+              <div class="transaction-name">
+                Phone Bill
+              </div>
+
+              <div class="transaction-meta">
+                Sep 28 · Bills
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="transaction-amount expense">
+            -$45.00
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="bottom-nav">
+
+    <button class="bottom-item active">
+      <span>⌂</span>
+      Home
+    </button>
+
+    <button class="bottom-item">
+      <span>↕</span>
+      Activity
+    </button>
+
+    <button class="bottom-add">
+      +
+    </button>
+
+    <button class="bottom-item">
+      <span>◎</span>
+      Goals
+    </button>
+
+    <button class="bottom-item">
+      <span>☰</span>
+      More
+    </button>
+
+  </nav>
 
 </body>
-  </html>
+</html>
